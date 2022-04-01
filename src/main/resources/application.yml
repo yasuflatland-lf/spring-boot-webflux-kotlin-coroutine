@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+  flyway:
+    url: ""
+    user: "root"
+    password: "password"
+    locations: classpath:db/migration
+  r2dbc:
+    url: ""
+    username: "root"
+    password: "password"
+  main:
+    allow-bean-definition-overriding: true
+
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    use-root-path: true
