@@ -1,4 +1,4 @@
-package com.sennproject.springbootwebfluxkotlincoroutine.services
+package com.sennproject.springbootwebfluxkotlincoroutine
 
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
@@ -10,13 +10,13 @@ import org.testcontainers.utility.DockerImageName
 @Testcontainers
 abstract class AbstractContainerBaseTest {
     companion object {
-        val mysql: MySQLContainer<*> = MySQLContainer<Nothing>(DockerImageName.parse("mysql:5.7"))
+        val mysql: MySQLContainer<*> = MySQLContainer<Nothing>(DockerImageName.parse("mysql:8.0"))
             .apply {
                 withUsername("root")
                 withPassword("password")
                 withDatabaseName("test")
                 withConfigurationOverride("db/mysql_conf_override")
-                withFileSystemBind("./build/log", "/var/log/mysql")
+//                withFileSystemBind("./build/log", "/var/log/mysql")
                 withUrlParam("useSsl", "false")
                 start()
             }

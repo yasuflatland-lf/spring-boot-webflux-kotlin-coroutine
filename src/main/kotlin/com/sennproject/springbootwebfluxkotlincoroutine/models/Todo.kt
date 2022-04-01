@@ -3,12 +3,15 @@ package com.sennproject.springbootwebfluxkotlincoroutine.models
 import lombok.NoArgsConstructor
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
+import java.time.LocalDateTime
 
 @NoArgsConstructor
 @Table("todos")
 data class Todo(
     @Id
-    val id: Long? = 0L,
-    val task: String? = "",
-    val done: Boolean? = false,
+    var id: Long?,
+    var task: String? = "",
+    var status: Boolean? = false,
+    val created_at: LocalDateTime = LocalDateTime.now(),
+    var updated_at: LocalDateTime = LocalDateTime.now()
 )
