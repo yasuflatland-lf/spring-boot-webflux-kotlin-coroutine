@@ -17,3 +17,18 @@ springdoc:
   version: '@springdoc.version@'
   swagger-ui:
     use-root-path: true
+#springdoc:
+#  version: '@springdoc.version@'
+#  swagger-ui:
+#    use-root-path: true
+#  use-management-port: true
+#  show-actuator: true
+#
+## This property enables the openapi and swaggerui endpoints to be exposed beneath the actuator base path.
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: openapi, swaggerui
+#  server:
+#    port: 9090

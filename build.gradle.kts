@@ -2,8 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("io.freefair.lombok") version "6.4.1"
-    id("org.springframework.boot") version "2.6.5"
+    id("org.springframework.boot") version "2.6.6"
+//    id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+
     kotlin("jvm") version "1.6.20"
     kotlin("plugin.spring") version "1.6.20"
 }
@@ -41,6 +43,11 @@ dependencies {
     // Database
     runtimeOnly("dev.miku:r2dbc-mysql")
     runtimeOnly("mysql:mysql-connector-java")
+
+    // OpenAPI
+//    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.7")
+//    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.7")
+//    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.7")
 
     // Test
     testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
