@@ -3,11 +3,16 @@ package com.sennproject.springbootwebfluxkotlincoroutine.repositories
 import com.sennproject.springbootwebfluxkotlincoroutine.AbstractContainerBaseTest
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.data.blocking.forAll
+import io.kotest.data.row
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.test.runTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -34,6 +39,30 @@ class TodoRepositoryTest : FunSpec() {
             result.id shouldNotBe 0
             result.task shouldBe "test"
             result.status shouldBe false
+        }
+
+        test("findAllByStatus") {
+            forAll(
+                row(true, true, 1),
+                row(true, false, 0),
+                row(false, false, 1),
+                row(false, true, 2),
+            ) { orgStatus, filterStatus, amount ->
+
+                runTest {
+                    var todo = Todo(null)
+                    todo.task = "test"
+                    todo.status = orgStatus
+                    todoRepository.save(todo)
+
+                    var result = todoRepository.findAllByStatus(filterStatus, PageRequest.of(0, 20))
+                    result.count() shouldBe amount
+//                result.collect { value ->
+//                    result shouldBe ""
+//                }
+                }
+
+            }
         }
     }
 }
