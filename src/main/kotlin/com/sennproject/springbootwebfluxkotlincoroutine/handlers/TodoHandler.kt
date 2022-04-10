@@ -8,26 +8,33 @@ import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 
 @Service
-class TodoHandler(private val repository: TodoRepository) {
+class TodoHandler(val repository: TodoRepository) {
+
     suspend fun findAll(request: ServerRequest): ServerResponse {
         val todos = repository.findAll()
         return ok().contentType(APPLICATION_JSON).bodyAndAwait(todos);
     }
 
-    suspend fun addTodo(request: ServerRequest): ServerResponse {
+    suspend fun findById(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+        val todo = id.let { repository.findById(it) }
+        return todo?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
+            ?: ServerResponse.notFound().buildAndAwait()
+    }
+
+    suspend fun add(request: ServerRequest): ServerResponse {
         val person = request.awaitBody<Todo>()
         repository.save(person)
         return ok().buildAndAwait()
     }
 
-    suspend fun getTodo(request: ServerRequest): ServerResponse {
-        val todoId = request.pathVariable("id").toLong()
-        return repository.findById(todoId)?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
-            ?: ServerResponse.notFound().buildAndAwait()
-    }
-
-    suspend fun deleteTodo(request: ServerRequest): ServerResponse {
-        val todoId = request.pathVariable("id").toLong()
-        return repository.deleteById(todoId)?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
-    }
+//    val delete = HandlerFunction { request: ServerRequest? -> suspend {
+//        val id = request?.pathVariable("id")?.toLong()
+//        return repository.deleteById(todoId)?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
+//
+//    }
+//    suspend fun deleteTodo(request: ServerRequest): ServerResponse {
+//        val todoId = request.pathVariable("id").toLong()
+//        return repository.deleteById(todoId)?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
+//    }
 }

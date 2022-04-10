@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      # Data initialize script trigger directory. place initialize file under the mysql_init directory.
+      - ./db/mysql_init:/docker-entrypoint-initdb.d
+      # persistent data directory
+      - ./db/mysql_data:/var/lib/mysql
+      # configuration file
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: test
+      MYSQL_PASSWORD: password
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    depends_on:
+      - mysql

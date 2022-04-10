@@ -3,12 +3,12 @@ server:
 
 spring:
   flyway:
-    url: jdbc:mysql://mysql:3306/test?characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
     user: root
     password: password
     locations: classpath:db/migration
   r2dbc:
-    url: r2dbc:mysql://mysql:3306/test?characterEncoding=utf-8
+    url: r2dbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
     user: root
     password: password
 
