@@ -31,7 +31,7 @@ class MysqlConfig : AbstractR2dbcConfiguration() {
             .option(USER, user)
             .option(PORT, parse(url).getValue(PORT) as Int)  // optional, default 3306
             .option(PASSWORD, password) // optional, default null, null means has no password
-            .option(DATABASE, "r2dbc") // optional, default null, null means not specifying the database
+            .option(DATABASE, parse(url).getValue(DATABASE) as String) // optional, default null, null means not specifying the database
             .option(CONNECT_TIMEOUT, Duration.ofSeconds(10)) // optional, default null, null means no timeout
 //            .option(
 //                Option.valueOf("socketTimeout"),

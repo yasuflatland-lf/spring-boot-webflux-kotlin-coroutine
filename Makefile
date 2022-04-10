@@ -17,5 +17,21 @@ help: ## Display this help screen
 clean: ## Cleanup environment
 	rm -fR ./db/mysql_data
 
+.PHONY: down
+down: ## Cleanup environment
+	docker-compose down;
+
+.PHONY: devDB
+devDB: ## Run development environment
+	docker-compose -f docker-compose-local.yml up;
+
+.PHONY: devBoot
+devBoot: ## Run development environment
+	export SPRING_PROFILES_ACTIVE=local && ./gradlew bootRun ;
+
+.PHONY: genapi
+genapi: ## Run development environment
+	export SPRING_PROFILES_ACTIVE=local && ./gradlew clean generateOpenApiDocs ;
+
 .PHONY: err ## Error function to catch error while running Makefile
     err: ; $(ERR)

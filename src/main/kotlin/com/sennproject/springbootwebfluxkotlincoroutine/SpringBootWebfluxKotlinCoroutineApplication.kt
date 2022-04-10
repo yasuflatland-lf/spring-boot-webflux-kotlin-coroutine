@@ -8,7 +8,9 @@ import org.springdoc.webflux.core.converters.WebFluxSupportConverter
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.web.reactive.config.EnableWebFlux
 
+@EnableWebFlux
 @SpringBootApplication
 class SpringBootWebfluxKotlinCoroutineApplication
 
