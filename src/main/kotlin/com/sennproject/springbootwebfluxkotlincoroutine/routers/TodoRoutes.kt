@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import org.springdoc.core.annotations.RouterOperation
 import org.springdoc.core.annotations.RouterOperations
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType.APPLICATION_JSON
@@ -15,6 +16,7 @@ import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
 class TodoRoutes {
+
     // https://springdoc.org/#spring-webfluxwebmvc-fn-with-functional-endpoints
     // https://tech.uzabase.com/entry/2021/01/13/150022
     // https://github.com/spring-projects/spring-framework/issues/25938
@@ -52,8 +54,7 @@ class TodoRoutes {
         ),
     )
     @Bean
-    fun router(repository: TodoRepository) = coRouter {
-        val handler = TodoHandler(repository)
+    fun router(handler: TodoHandler) = coRouter {
 
         accept(APPLICATION_JSON).nest {
             GET("/todo/{id}", handler::findById)

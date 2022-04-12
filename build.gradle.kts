@@ -43,6 +43,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     
     // OpenAPI
+    implementation("org.springdoc:springdoc-openapi-ui:${property("openAPIVersion")}")
     implementation("org.springdoc:springdoc-openapi-kotlin:${property("openAPIVersion")}")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:${property("openAPIVersion")}")
 

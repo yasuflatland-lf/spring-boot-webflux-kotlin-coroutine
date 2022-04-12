@@ -6,12 +6,14 @@ import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
 import org.springdoc.webflux.core.converters.WebFluxSupportConverter
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.web.reactive.config.EnableWebFlux
 
 @EnableWebFlux
 @SpringBootApplication
+@ConfigurationPropertiesScan
 class SpringBootWebfluxKotlinCoroutineApplication
 
 fun main(args: Array<String>) {
@@ -27,5 +29,6 @@ fun customOpenAPI(): OpenAPI? {
                 .license(License().name("Apache 2.0").url("http://springdoc.org"))
                 .description("Todo API sample application")
                 .version("v1")
+                .termsOfService("http://swagger.io/terms/")
         )
 }

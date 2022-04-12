@@ -27,7 +27,7 @@ devDB: ## Run development environment
 
 .PHONY: devBoot
 devBoot: ## Run development environment
-	export SPRING_PROFILES_ACTIVE=local && ./gradlew bootRun ;
+	export SPRING_PROFILES_ACTIVE=local && ./gradlew clean bootRun ;
 
 .PHONY: genapi
 genapi: ## Run development environment

@@ -17,3 +17,6 @@ springdoc:
   version: '@springdoc.version@'
   swagger-ui:
     use-root-path: true
+  api-docs:
+    path: /api-docs
+

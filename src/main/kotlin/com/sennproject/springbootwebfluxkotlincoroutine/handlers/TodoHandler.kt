@@ -3,11 +3,11 @@ package com.sennproject.springbootwebfluxkotlincoroutine.handlers
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 
-@Service
+@Component
 class TodoHandler(val repository: TodoRepository) {
 
     suspend fun findAll(request: ServerRequest): ServerResponse {

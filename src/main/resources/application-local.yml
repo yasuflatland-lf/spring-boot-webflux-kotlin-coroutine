@@ -17,8 +17,5 @@ spring:
 
 springdoc:
   version: '@springdoc.version@'
-  webjars:
-    prefix: /
-  swagger-ui:
-    use-root-path: true
+
 

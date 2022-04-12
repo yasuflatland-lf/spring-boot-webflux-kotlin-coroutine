@@ -23,6 +23,14 @@ $ ./gradlew bootRun
 ```bash
 $ make clean
 ```
+
+# OpenAPI
+## How to get OpenAPI yaml
+```bash
+http://localhost:8080/api-docs.yaml
+```
+
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 
