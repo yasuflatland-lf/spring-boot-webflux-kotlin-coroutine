@@ -2,6 +2,10 @@ package com.sennproject.springbootwebfluxkotlincoroutine.handlers
 
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
@@ -9,9 +13,21 @@ import org.springframework.web.reactive.function.server.ServerResponse.ok
 
 @Component
 class TodoHandler(val repository: TodoRepository) {
+    companion object {
+        val log: Logger = LoggerFactory.getLogger(TodoHandler::class.java)
+    }
 
     suspend fun findAll(request: ServerRequest): ServerResponse {
         val todos = repository.findAll()
+        return ok().contentType(APPLICATION_JSON).bodyAndAwait(todos);
+    }
+
+    suspend fun findAllByStatus(request: ServerRequest): ServerResponse {
+        val page = request.pathVariable("page").toInt()
+        val size = request.pathVariable("size").toInt()
+        val sort = Sort.by(listOf(Sort.Order.desc("id")))
+        val paging = PageRequest.of(page, size, sort)
+        val todos = repository.findAllByStatusEquals(false, paging)
         return ok().contentType(APPLICATION_JSON).bodyAndAwait(todos);
     }
 
@@ -23,18 +39,15 @@ class TodoHandler(val repository: TodoRepository) {
     }
 
     suspend fun add(request: ServerRequest): ServerResponse {
-        val person = request.awaitBody<Todo>()
-        repository.save(person)
+        val todo = request.awaitBody<Todo>()
+        repository.save(todo)
         return ok().buildAndAwait()
     }
 
-//    val delete = HandlerFunction { request: ServerRequest? -> suspend {
-//        val id = request?.pathVariable("id")?.toLong()
-//        return repository.deleteById(todoId)?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
-//
-//    }
-//    suspend fun deleteTodo(request: ServerRequest): ServerResponse {
-//        val todoId = request.pathVariable("id").toLong()
-//        return repository.deleteById(todoId)?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
-//    }
+    suspend fun delete(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id").toLong()
+        repository.deleteById(id)
+        return ok().buildAndAwait()
+    }
+
 }

@@ -41,7 +41,7 @@ class TodoRepositoryTest : FunSpec() {
             result.status shouldBe false
         }
 
-        test("findAllByStatus") {
+        test("findAllByStatusEquals") {
             forAll(
                 row(true, true, 1),
                 row(true, false, 0),
@@ -55,13 +55,9 @@ class TodoRepositoryTest : FunSpec() {
                     todo.status = orgStatus
                     todoRepository.save(todo)
 
-                    var result = todoRepository.findAllByStatus(filterStatus, PageRequest.of(0, 20))
+                    var result = todoRepository.findAllByStatusEquals(filterStatus, PageRequest.of(0, 20))
                     result.count() shouldBe amount
-//                result.collect { value ->
-//                    result shouldBe ""
-//                }
                 }
-
             }
         }
     }
