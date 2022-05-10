@@ -58,7 +58,7 @@ class TodoRoutes {
 
         accept(APPLICATION_JSON).nest {
             GET("/todo/{id}", handler::findById)
-            GET("/todo", handler::findAll)
+            GET("/todo", handler::findAllByStatus)
         }
         POST("/todo", handler::add)
     }

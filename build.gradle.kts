@@ -6,8 +6,8 @@ plugins {
     id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
-    kotlin("jvm") version "1.6.20"
-    kotlin("plugin.spring") version "1.6.20"
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
 }
 
 group = "com.sennproject"
@@ -19,7 +19,7 @@ repositories {
 }
 
 extra["kotestVersion"] = "5.1.0"
-extra["testcontainersVersion"] = "1.16.2"
+extra["testcontainersVersion"] = "1.17.1"
 extra["openAPIVersion"] = "1.6.7"
 extra["coroutinesCoreVersion"] = "1.6.0"
 
@@ -36,11 +36,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${property("coroutinesCoreVersion")}")
     implementation("org.springframework:spring-jdbc")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     // Lombok
     compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
     
     // OpenAPI
     implementation("org.springdoc:springdoc-openapi-ui:${property("openAPIVersion")}")

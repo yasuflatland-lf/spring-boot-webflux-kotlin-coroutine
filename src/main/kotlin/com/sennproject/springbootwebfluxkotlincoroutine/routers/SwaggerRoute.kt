@@ -6,9 +6,11 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.router
 import java.net.URI
 
+/**
+ * @author Yasuyuki Takeo
+ */
 @Configuration
 class SwaggerRoute {
-
     @Bean
     fun docsRouter() = router {
         GET("/") {

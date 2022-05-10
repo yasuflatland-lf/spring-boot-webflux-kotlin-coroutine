@@ -10,6 +10,9 @@ import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import java.time.Duration
 
+/**
+ * @author Yasuyuki Takeo
+ */
 @Configuration(value = "abstractR2dbcConfiguration")
 @EnableTransactionManagement
 class MysqlConfig : AbstractR2dbcConfiguration() {

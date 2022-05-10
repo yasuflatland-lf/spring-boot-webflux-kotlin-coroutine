@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.kotlin.CoroutineSortingRepository
 import org.springframework.stereotype.Service
 
+/**
+ * @author Yasuyuki Takeo
+ */
 @Service
 interface TodoRepository : CoroutineSortingRepository<Todo, Long> {
     fun findAllByStatusEquals(status: Boolean, paging: Pageable?) : Flow<Todo>
-//    fun findAllByStatusEqualsOrderByIdIdDesc(status: Boolean, paging: Pageable?) : Flow<Todo>
 }

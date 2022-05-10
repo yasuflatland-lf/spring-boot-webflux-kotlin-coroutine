@@ -9,6 +9,7 @@ import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -41,7 +42,7 @@ class TodoRepositoryTest : FunSpec() {
             result.status shouldBe false
         }
 
-        test("findAllByStatusEquals") {
+        test("findAllByStatusEquals success pattern") {
             forAll(
                 row(true, true, 1),
                 row(true, false, 0),
@@ -56,6 +57,25 @@ class TodoRepositoryTest : FunSpec() {
                     todoRepository.save(todo)
 
                     var result = todoRepository.findAllByStatusEquals(filterStatus, PageRequest.of(0, 20))
+                    result.count() shouldBe amount
+                }
+            }
+        }
+
+        test("findAllByStatusEquals failure pattern") {
+            forAll(
+                row(true, true, 1, true),
+                row(false, false, 1, false),
+            ) { orgStatus, filterStatus, amount, resultStats ->
+
+                runTest {
+                    var todo = Todo(null)
+                    todo.task = "test"
+                    todo.status = orgStatus
+                    todoRepository.save(todo)
+
+                    var result = todoRepository.findAllByStatusEquals(filterStatus, PageRequest.of(0, 20))
+                    result.first().status shouldBe resultStats
                     result.count() shouldBe amount
                 }
             }
