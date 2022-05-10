@@ -6,17 +6,21 @@ A sample of Spring boot WebFlux and Kotlin Coroutine with Handler and Router. In
 - Docker 4.6.1 >=
 
 # Getting Started
+Please make sure Docker is up and running.
+
 ## Production
 `application.yml` will be referred for the configuration.
 
-Run `docker-compose up`
+```bash
+$ make run
+```
 
 ## Development
 `application-local.yml` will be referred for the configuration.
 
 ```bash
-$ docker-compose -f docker-compose-local.yml up
-$ ./gradlew bootRun
+$ make devDB
+$ make devBoot
 ```
 
 ## Clean up environment
@@ -27,7 +31,7 @@ $ make clean
 # OpenAPI
 ## How to get OpenAPI yaml
 ```bash
-http://localhost:8080/api-docs.yaml
+http://localhost:8080/webjars/swagger-ui/index.html
 ```
 
 

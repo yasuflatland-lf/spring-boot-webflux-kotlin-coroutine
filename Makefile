@@ -29,6 +29,10 @@ devDB: ## Run development environment
 devBoot: ## Run development environment
 	export SPRING_PROFILES_ACTIVE=local && ./gradlew clean bootRun ;
 
+.PHONY: run
+run: ## Run production environment
+	docker-compose up;
+
 .PHONY: genapi
 genapi: ## Run development environment
 	export SPRING_PROFILES_ACTIVE=local && ./gradlew clean generateOpenApiDocs ;
