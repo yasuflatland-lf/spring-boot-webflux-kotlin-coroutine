@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("io.freefair.lombok") version "6.4.1"
-    id("org.springframework.boot") version "2.6.6"
+    id("io.freefair.lombok") version "6.5.0.3"
+    id("org.springframework.boot") version "2.6.9"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("io.spring.dependency-management") version "1.0.12.RELEASE"
 
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
@@ -19,9 +19,9 @@ repositories {
 }
 
 extra["kotestVersion"] = "5.1.0"
-extra["testcontainersVersion"] = "1.17.1"
 extra["openAPIVersion"] = "1.6.7"
-extra["coroutinesCoreVersion"] = "1.6.0"
+extra["testcontainersVersion"] = "1.17.3"
+extra["coroutinesCoreVersion"] = "1.6.3"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")

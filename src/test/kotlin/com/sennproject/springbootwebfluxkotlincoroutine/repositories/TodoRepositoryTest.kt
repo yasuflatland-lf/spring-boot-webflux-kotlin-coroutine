@@ -42,6 +42,20 @@ class TodoRepositoryTest : FunSpec() {
             result.status shouldBe false
         }
 
+        test("Delete") {
+            // Save
+            var todo = Todo(null)
+            todo.task = "test"
+            var result = todoRepository.save(todo)
+            var amount = todoRepository.count()
+            amount shouldBe 1
+
+            // Delete
+            todoRepository.delete(result)
+            amount = todoRepository.count()
+            amount shouldBe 0
+        }
+
         test("findAllByStatusEquals success pattern") {
             forAll(
                 row(true, true, 1),

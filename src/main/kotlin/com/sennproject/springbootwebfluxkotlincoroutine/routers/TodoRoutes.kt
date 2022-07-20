@@ -1,13 +1,11 @@
 package com.sennproject.springbootwebfluxkotlincoroutine.routers
 
 import com.sennproject.springbootwebfluxkotlincoroutine.handlers.TodoHandler
-import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import org.springdoc.core.annotations.RouterOperation
 import org.springdoc.core.annotations.RouterOperations
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType.APPLICATION_JSON
@@ -27,7 +25,16 @@ class TodoRoutes {
             path = "/todo",
             method = [RequestMethod.GET],
             beanClass = TodoHandler::class,
-            beanMethod = "findAll"
+            beanMethod = "findAllByStatus",
+            operation = Operation(
+                operationId = "findAllByStatus",
+                summary = "Find all status",
+                parameters = [
+                    Parameter(`in` = ParameterIn.PATH, name = "status", description = "status"),
+                    Parameter(`in` = ParameterIn.PATH, name = "size", description = "size"),
+                    Parameter(`in` = ParameterIn.PATH, name = "size", description = "size"),
+                ]
+            )
         ),
         RouterOperation(
             path = "/todo/{id}",
@@ -43,7 +50,7 @@ class TodoRoutes {
             )
         ),
         RouterOperation(
-            path = "/todo/{id}",
+            path = "/todo",
             method = [RequestMethod.POST],
             beanClass = TodoHandler::class,
             beanMethod = "add",

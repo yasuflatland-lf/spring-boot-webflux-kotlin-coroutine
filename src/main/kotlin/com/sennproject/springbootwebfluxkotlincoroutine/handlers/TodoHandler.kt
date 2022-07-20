@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.BodyExtractors
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.ServerResponse.status
@@ -25,12 +26,14 @@ class TodoHandler(val repository: TodoRepository) {
 
     suspend fun findAllByStatus(request: ServerRequest): ServerResponse {
         return runCatching {
-            val status = request.pathVariable("status").toBoolean()
-            val page = request.pathVariable("page").toInt()
-            val size = request.pathVariable("size").toInt()
+            var status = request.queryParam("status").map { it.toBoolean() }.orElse(false)
+            val page = request.queryParam("page").map { it.toInt() }.orElse(1)
+            val size = request.queryParam("size").map { it.toInt() }.orElse(10)
             val sort = Sort.by(listOf(Sort.Order.desc("id")))
             val paging = PageRequest.of(page, size, sort)
+
             if (log.isDebugEnabled) {
+                log.debug("status $status, page $page, size $size")
                 log.debug("paging : $paging")
             }
             repository.findAllByStatusEquals(status, paging)
@@ -54,10 +57,34 @@ class TodoHandler(val repository: TodoRepository) {
             ?: ServerResponse.notFound().buildAndAwait()
     }
 
+//    fun addA(serverRequest: ServerRequest) = serverRequest.body(BodyExtractors.toFormData())
+//        .flatMap {
+//            val formData = it.toSingleValueMap()
+//            ownersRepository.save(Owner(
+//                id = formData["id"] ?: UUID.randomUUID().toString(),
+//                firstName = formData["firstName"]!!,
+//                lastName = formData["lastName"]!!,
+//                address = formData["address"]!!,
+//                telephone = formData["telephone"]!!,
+//                city = formData["city"]!!))
+//        }
+//        .then(indexPage())
+
     suspend fun add(request: ServerRequest): ServerResponse {
-        val todo = request.awaitBody<Todo>()
-        repository.save(todo)
-        return ok().buildAndAwait()
+        return runCatching {
+            val todo = request.awaitBody<Todo>()
+            repository.save(todo)
+        }.fold(
+            onSuccess = {
+                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+            },
+            onFailure = {
+                log.error(it.message)
+                status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(APPLICATION_JSON)
+                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+            }
+        )
     }
 
     suspend fun delete(request: ServerRequest): ServerResponse {
