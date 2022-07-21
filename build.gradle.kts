@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    jacoco
     id("io.freefair.lombok") version "6.5.0.3"
     id("org.springframework.boot") version "2.6.9"
     id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
@@ -80,4 +81,14 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
 }

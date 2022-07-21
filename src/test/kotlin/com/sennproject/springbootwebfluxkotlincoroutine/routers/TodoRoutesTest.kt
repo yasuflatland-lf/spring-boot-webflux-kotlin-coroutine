@@ -7,6 +7,7 @@ import io.kotest.core.annotation.AutoScan
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono
 
 @AutoScan
 @Testcontainers
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalStdlibApi::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ContextConfiguration(initializers = [AbstractContainerBaseTest.Initializer::class])
@@ -39,7 +41,7 @@ class TodoRoutesTest : FunSpec() {
             todoRepository.deleteAll()
         }
 
-        test("Get all todos Smoke Test").config(testCoroutineDispatcher = true) {
+        test("Get all todos Smoke Test") {
             var todo = arrayListOf<Todo>()
 
             WebTestClient
@@ -63,7 +65,7 @@ class TodoRoutesTest : FunSpec() {
                 .isEqualTo(todo)
         }
 
-        test("Get all todos no params Test").config(testCoroutineDispatcher = true) {
+        test("Get all todos no params Test") {
             var todo = arrayListOf<Todo>()
 
             WebTestClient
@@ -80,7 +82,7 @@ class TodoRoutesTest : FunSpec() {
                 .isEqualTo(todo)
         }
 
-        test("Add test").config(testCoroutineDispatcher = true) {
+        test("Add test") {
             var todo = Todo(null)
 
             WebTestClient
@@ -94,6 +96,32 @@ class TodoRoutesTest : FunSpec() {
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful
+        }
+
+        test("Delete test") {
+            // Create a todo
+            var todo = Todo(null)
+            val result = todoRepository.save(todo)
+            val beforeAmount = todoRepository.count()
+            beforeAmount shouldBe 1
+
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .delete()
+                .uri { uriBuilder ->
+                    uriBuilder
+                        .pathSegment("todo", result.id.toString())
+                        .build()
+                }
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful
+
+            val afterAmount = todoRepository.count()
+            afterAmount shouldBe 0
         }
     }
 

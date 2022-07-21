@@ -28,7 +28,7 @@ class TodoRoutes {
             beanMethod = "findAllByStatus",
             operation = Operation(
                 operationId = "findAllByStatus",
-                summary = "Find all status",
+                summary = "Find all todos by status",
                 parameters = [
                     Parameter(`in` = ParameterIn.PATH, name = "status", description = "status"),
                     Parameter(`in` = ParameterIn.PATH, name = "size", description = "size"),
@@ -43,7 +43,7 @@ class TodoRoutes {
             beanMethod = "findById",
             operation = Operation(
                 operationId = "findById",
-                summary = "Find a todo with the id",
+                summary = "Find a todo by id",
                 parameters = [
                     Parameter(`in` = ParameterIn.PATH, name = "id", description = "Todo ID"),
                 ]
@@ -59,6 +59,20 @@ class TodoRoutes {
                 summary = "Add a todo",
             )
         ),
+        RouterOperation(
+            path = "/todo",
+            method = [RequestMethod.DELETE],
+            beanClass = TodoHandler::class,
+            beanMethod = "delete",
+            operation = Operation(
+                operationId = "delete",
+                summary = "Delete a todo by id",
+                parameters = [
+                    Parameter(`in` = ParameterIn.PATH, name = "id", description = "Todo ID"),
+                ]
+            )
+
+        ),
     )
     @Bean
     fun router(handler: TodoHandler) = coRouter {
@@ -68,6 +82,7 @@ class TodoRoutes {
             GET("/todo", handler::findAllByStatus)
         }
         POST("/todo", handler::add)
+        DELETE("/todo/{id}", handler::delete)
     }
 
 }

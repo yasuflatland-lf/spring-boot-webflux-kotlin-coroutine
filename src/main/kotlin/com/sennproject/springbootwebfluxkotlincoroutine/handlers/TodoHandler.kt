@@ -57,19 +57,6 @@ class TodoHandler(val repository: TodoRepository) {
             ?: ServerResponse.notFound().buildAndAwait()
     }
 
-//    fun addA(serverRequest: ServerRequest) = serverRequest.body(BodyExtractors.toFormData())
-//        .flatMap {
-//            val formData = it.toSingleValueMap()
-//            ownersRepository.save(Owner(
-//                id = formData["id"] ?: UUID.randomUUID().toString(),
-//                firstName = formData["firstName"]!!,
-//                lastName = formData["lastName"]!!,
-//                address = formData["address"]!!,
-//                telephone = formData["telephone"]!!,
-//                city = formData["city"]!!))
-//        }
-//        .then(indexPage())
-
     suspend fun add(request: ServerRequest): ServerResponse {
         return runCatching {
             val todo = request.awaitBody<Todo>()
@@ -88,9 +75,20 @@ class TodoHandler(val repository: TodoRepository) {
     }
 
     suspend fun delete(request: ServerRequest): ServerResponse {
-        val id = request.pathVariable("id").toLong()
-        repository.deleteById(id)
-        return ok().buildAndAwait()
+        return runCatching {
+            val id = request.pathVariable("id").toLong()
+            repository.deleteById(id)
+        }.fold(
+            onSuccess = {
+                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+            },
+            onFailure = {
+                log.error(it.message)
+                status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(APPLICATION_JSON)
+                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+            }
+        )
     }
 
 }
