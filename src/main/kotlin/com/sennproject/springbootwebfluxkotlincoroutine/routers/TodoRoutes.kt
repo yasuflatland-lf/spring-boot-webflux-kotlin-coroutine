@@ -61,6 +61,16 @@ class TodoRoutes {
         ),
         RouterOperation(
             path = "/todo",
+            method = [RequestMethod.PATCH],
+            beanClass = TodoHandler::class,
+            beanMethod = "edit",
+            operation = Operation(
+                operationId = "edit",
+                summary = "Edit a todo",
+            )
+        ),
+        RouterOperation(
+            path = "/todo",
             method = [RequestMethod.DELETE],
             beanClass = TodoHandler::class,
             beanMethod = "delete",
@@ -82,6 +92,7 @@ class TodoRoutes {
             GET("/todo", handler::findAllByStatus)
         }
         POST("/todo", handler::add)
+        PATCH("/todo", handler::edit)
         DELETE("/todo/{id}", handler::delete)
     }
 

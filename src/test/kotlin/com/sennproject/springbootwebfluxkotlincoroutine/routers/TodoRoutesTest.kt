@@ -82,7 +82,7 @@ class TodoRoutesTest : FunSpec() {
                 .isEqualTo(todo)
         }
 
-        test("Add test") {
+        test("Add Smoke test") {
             var todo = Todo(null)
 
             WebTestClient
@@ -98,7 +98,37 @@ class TodoRoutesTest : FunSpec() {
                 .is2xxSuccessful
         }
 
-        test("Delete test") {
+        test("Edit Smoke test") {
+            // Create a todo
+            var todo = Todo(null)
+            var result = todoRepository.save(todo)
+            val beforeAmount = todoRepository.count()
+            beforeAmount shouldBe 1
+
+            // Change task string
+            result.task = "changed"
+
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .patch()
+                .uri("/todo")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(Mono.just(result), Todo::class.java))
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful
+
+            var changedResult = result.id?.let { todoRepository.findById(it) }
+
+            // Must be properly edited.
+            if (changedResult != null) {
+                changedResult.task shouldBe result.task
+            }
+        }
+
+        test("Delete Smoke test") {
             // Create a todo
             var todo = Todo(null)
             val result = todoRepository.save(todo)

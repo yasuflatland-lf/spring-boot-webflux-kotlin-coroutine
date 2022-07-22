@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.BodyExtractors
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.ServerResponse.status
@@ -61,6 +60,27 @@ class TodoHandler(val repository: TodoRepository) {
         return runCatching {
             val todo = request.awaitBody<Todo>()
             repository.save(todo)
+        }.fold(
+            onSuccess = {
+                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+            },
+            onFailure = {
+                log.error(it.message)
+                status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(APPLICATION_JSON)
+                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+            }
+        )
+    }
+
+    suspend fun edit(request: ServerRequest): ServerResponse {
+        return runCatching {
+            val todo = request.awaitBody<Todo>()
+            var findTodo = todo.id?.let { repository.findById(it) }
+
+            return findTodo?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(repository.save(todo)) }
+                ?: ServerResponse.notFound().buildAndAwait()
+
         }.fold(
             onSuccess = {
                 ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
