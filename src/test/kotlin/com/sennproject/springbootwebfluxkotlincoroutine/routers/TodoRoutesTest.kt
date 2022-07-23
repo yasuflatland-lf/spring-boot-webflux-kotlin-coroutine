@@ -3,11 +3,13 @@ package com.sennproject.springbootwebfluxkotlincoroutine.routers
 import com.sennproject.springbootwebfluxkotlincoroutine.AbstractContainerBaseTest
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
+import com.sennproject.springbootwebfluxkotlincoroutine.utils.TodoTestUtils
 import io.kotest.core.annotation.AutoScan
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.count
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
@@ -152,6 +154,61 @@ class TodoRoutesTest : FunSpec() {
 
             val afterAmount = todoRepository.count()
             afterAmount shouldBe 0
+        }
+
+        test("Edit Error test") {
+            // Create a todo
+            var result = todoRepository.save(Todo(null))
+            val beforeAmount = todoRepository.count()
+            beforeAmount shouldBe 1
+
+            // Change task string
+            result.task = "changed"
+            result.id = 1000
+
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .patch()
+                .uri("/todo")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(Mono.just(result), Todo::class.java))
+                .exchange()
+                .expectStatus()
+                .is4xxClientError
+
+        }
+
+        test("Get all todos data Test") {
+            val todoAmount: Long = 10
+            val trueAmount = 3
+            var todos = TodoTestUtils.createRandomList(todoAmount, trueAmount)
+
+            val check = todoRepository.saveAll(todos)
+            check.count() shouldBe todoAmount
+
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .get()
+                .uri { uriBuilder ->
+                    uriBuilder
+                        .path("/todo")
+                        .queryParam("status", true)
+                        .queryParam("page", 0)
+                        .queryParam("size", 5)
+                        .build()
+                }
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful
+                .expectBodyList(Todo::class.java)
+                .hasSize(trueAmount)
+                .returnResult()
+
         }
     }
 

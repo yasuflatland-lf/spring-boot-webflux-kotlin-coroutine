@@ -26,7 +26,7 @@ class TodoHandler(val repository: TodoRepository) {
     suspend fun findAllByStatus(request: ServerRequest): ServerResponse {
         return runCatching {
             var status = request.queryParam("status").map { it.toBoolean() }.orElse(false)
-            val page = request.queryParam("page").map { it.toInt() }.orElse(1)
+            val page = request.queryParam("page").map { it.toInt() }.orElse(0)
             val size = request.queryParam("size").map { it.toInt() }.orElse(10)
             val sort = Sort.by(listOf(Sort.Order.desc("id")))
             val paging = PageRequest.of(page, size, sort)

@@ -64,6 +64,10 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:r2dbc")
+
+    // Faker
+    implementation("com.github.javafaker:javafaker:1.0.2")
+
 }
 
 dependencyManagement {

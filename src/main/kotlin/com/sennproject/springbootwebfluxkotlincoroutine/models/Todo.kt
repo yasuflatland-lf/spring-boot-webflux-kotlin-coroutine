@@ -1,6 +1,5 @@
 package com.sennproject.springbootwebfluxkotlincoroutine.models
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import lombok.NoArgsConstructor
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
