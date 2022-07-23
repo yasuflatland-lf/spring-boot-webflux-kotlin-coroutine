@@ -31,7 +31,7 @@ devBoot: ## Run development environment
 
 .PHONY: run
 run: ## Run production environment
-	docker-compose up;
+	docker-compose up --build;
 
 .PHONY: genapi
 genapi: ## Run development environment

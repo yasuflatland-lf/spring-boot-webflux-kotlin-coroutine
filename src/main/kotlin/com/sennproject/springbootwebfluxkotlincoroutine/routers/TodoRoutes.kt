@@ -21,7 +21,6 @@ class TodoRoutes {
     // https://springdoc.org/#spring-webfluxwebmvc-fn-with-functional-endpoints
     // https://tech.uzabase.com/entry/2021/01/13/150022
     // https://github.com/spring-projects/spring-framework/issues/25938
-    // https://springdoc.org/#spring-webfluxwebmvc-fn-with-functional-endpoints
     // https://github.dev/springdoc/springdoc-openapi/blob/master/springdoc-openapi-webflux-core/src/test/java/test/org/springdoc/api/app90/book/BookRouter.java
     @RouterOperations(
         RouterOperation(
@@ -56,9 +55,9 @@ class TodoRoutes {
             path = "/todo",
             method = [RequestMethod.POST],
             beanClass = TodoHandler::class,
-            beanMethod = "add",
+            beanMethod = "edit",
             operation = Operation(
-                operationId = "add",
+                operationId = "edit",
                 summary = "Add a todo",
             )
         ),
@@ -94,7 +93,7 @@ class TodoRoutes {
             GET("/todo/{id}", handler::findById)
             GET("/todo", handler::findAllByStatus)
         }
-        POST("/todo", handler::add)
+        POST("/todo", handler::edit)
         PATCH("/todo", handler::edit)
         DELETE("/todo/{id}", handler::delete)
     }
