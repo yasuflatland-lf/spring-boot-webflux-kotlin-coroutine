@@ -12,6 +12,9 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.reactive.function.server.coRouter
 
+/**
+ * @author Yasuyuki Takeo
+ */
 @Configuration
 class TodoRoutes {
 

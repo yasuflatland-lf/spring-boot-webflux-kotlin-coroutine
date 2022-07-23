@@ -14,11 +14,11 @@ help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: clean
-clean: ## Cleanup environment
+clean: ## Cleanup database environment
 	rm -fR ./db/mysql_data
 
 .PHONY: down
-down: ## Cleanup environment
+down: ## Docker compose down
 	docker-compose down;
 
 .PHONY: devDB

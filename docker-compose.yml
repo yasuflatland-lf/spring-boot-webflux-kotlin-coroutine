@@ -4,6 +4,9 @@ services:
   mysql:
     image: mysql:8.0
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: "exit 0"
+
     ports:
       - "3306:3306"
       - "33060:33060"
@@ -27,4 +30,5 @@ services:
       - "8080:8080"
       - "9090:9090"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy

@@ -1,5 +1,5 @@
 # Container in which to build the application
-FROM gradle:7.4.2-jdk11 as builder
+FROM gradle:7.5.0-jdk11 as builder
 
 # Copy the source code into the builder container
 WORKDIR /app

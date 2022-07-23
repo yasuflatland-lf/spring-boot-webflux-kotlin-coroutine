@@ -11,6 +11,9 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.web.reactive.config.EnableWebFlux
 
+/**
+ * @author Yasuyuki Takeo
+ */
 @EnableWebFlux
 @SpringBootApplication
 @ConfigurationPropertiesScan
