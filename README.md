@@ -34,8 +34,16 @@ $ make clean
 http://localhost:8080/webjars/swagger-ui/index.html
 ```
 
+# Tips
 
-### Reference Documentation
+## Makefile commands
+You can run all commands by using Makefile. All available commands is displayed by typing,
+```bash
+$ make help
+```
+
+
+## Reference Documentation
 For further reference, please consider the following sections:
 
 * [Official Gradle documentation](https://docs.gradle.org)
@@ -51,14 +59,14 @@ For further reference, please consider the following sections:
 * [Flyway Migration](https://docs.spring.io/spring-boot/docs/2.6.6/reference/htmlsingle/#howto-execute-flyway-database-migrations-on-startup)
 * [Spring Data Elasticsearch (Access+Driver)](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-elasticsearch)
 
-### Guides
+## Guides
 The following guides illustrate how to use some features concretely:
 
 * [Building a Reactive RESTful Web Service](https://spring.io/guides/gs/reactive-rest-service/)
 * [Acessing data with R2DBC](https://spring.io/guides/gs/accessing-data-r2dbc/)
 * [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
 
-### Additional Links
+## Additional Links
 These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
