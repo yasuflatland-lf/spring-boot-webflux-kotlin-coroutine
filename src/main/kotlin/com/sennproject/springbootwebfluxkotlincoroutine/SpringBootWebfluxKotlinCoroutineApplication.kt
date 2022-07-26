@@ -1,22 +1,25 @@
 package com.sennproject.springbootwebfluxkotlincoroutine
 
-import io.swagger.v3.core.converter.ModelConverters
-import io.swagger.v3.oas.models.OpenAPI
-import io.swagger.v3.oas.models.info.Info
-import io.swagger.v3.oas.models.info.License
-import org.springdoc.webflux.core.converters.WebFluxSupportConverter
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import org.springdoc.core.GroupedOpenApi
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.web.reactive.config.EnableWebFlux
+
 
 /**
  * @author Yasuyuki Takeo
  */
-@EnableWebFlux
 @SpringBootApplication
-@ConfigurationPropertiesScan
+@OpenAPIDefinition(
+    info = io.swagger.v3.oas.annotations.info.Info(
+        title = "Todo Service",
+        version = "1.0.0",
+        description = "Springboot Webflux and Coroutine example implementations"
+
+    )
+)
 class SpringBootWebfluxKotlinCoroutineApplication
 
 fun main(args: Array<String>) {
@@ -24,14 +27,12 @@ fun main(args: Array<String>) {
 }
 
 @Bean
-fun customOpenAPI(): OpenAPI? {
-    ModelConverters.getInstance().addConverter(WebFluxSupportConverter())
-    return OpenAPI()
-        .info(
-            Info().title("Todo API").version("v1")
-                .license(License().name("Apache 2.0").url("http://springdoc.org"))
-                .description("Todo API sample application")
-                .version("v1")
-                .termsOfService("http://swagger.io/terms/")
-        )
+fun todosOpenApi(@Value("\${springdoc.version}") appVersion: String): GroupedOpenApi? {
+    val paths = arrayOf("/todo/**")
+    return GroupedOpenApi.builder().group("todo")
+        .addOpenApiCustomiser {
+            it.info(io.swagger.v3.oas.models.info.Info().title("TodoList API").version(appVersion))
+        }
+        .pathsToMatch(*paths)
+        .build()
 }
