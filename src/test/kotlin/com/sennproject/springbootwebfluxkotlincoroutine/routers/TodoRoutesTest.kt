@@ -53,7 +53,7 @@ class TodoRoutesTest : FunSpec() {
                 .get()
                 .uri { uriBuilder ->
                     uriBuilder
-                        .path("/todo")
+                        .path("/todos")
                         .queryParam("state", true)
                         .queryParam("page", 2)
                         .queryParam("size", 3)
@@ -75,7 +75,7 @@ class TodoRoutesTest : FunSpec() {
                 .baseUrl("http://localhost:$port")
                 .build()
                 .get()
-                .uri("/todo")
+                .uri("/todos")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
@@ -92,7 +92,7 @@ class TodoRoutesTest : FunSpec() {
                 .baseUrl("http://localhost:$port")
                 .build()
                 .post()
-                .uri("/todo")
+                .uri("/todos")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromPublisher(Mono.just(todo), Todo::class.java))
                 .exchange()
@@ -115,7 +115,7 @@ class TodoRoutesTest : FunSpec() {
                 .baseUrl("http://localhost:$port")
                 .build()
                 .patch()
-                .uri("/todo")
+                .uri("/todos")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromPublisher(Mono.just(result), Todo::class.java))
                 .exchange()
@@ -144,7 +144,7 @@ class TodoRoutesTest : FunSpec() {
                 .delete()
                 .uri { uriBuilder ->
                     uriBuilder
-                        .pathSegment("todo", result.id.toString())
+                        .pathSegment("todos", result.id.toString())
                         .build()
                 }
                 .accept(MediaType.APPLICATION_JSON)
@@ -171,7 +171,7 @@ class TodoRoutesTest : FunSpec() {
                 .baseUrl("http://localhost:$port")
                 .build()
                 .patch()
-                .uri("/todo")
+                .uri("/todos")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromPublisher(Mono.just(result), Todo::class.java))
                 .exchange()
@@ -195,7 +195,7 @@ class TodoRoutesTest : FunSpec() {
                 .get()
                 .uri { uriBuilder ->
                     uriBuilder
-                        .path("/todo")
+                        .path("/todos")
                         .queryParam("status", true)
                         .queryParam("page", 0)
                         .queryParam("size", 5)
