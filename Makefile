@@ -34,7 +34,7 @@ run: ## Run production environment
 	docker-compose up --build;
 
 .PHONY: genapi
-genapi: ## Run development environment
+genapi: ## Generate OpenAPI docs
 	export SPRING_PROFILES_ACTIVE=local && ./gradlew clean generateOpenApiDocs ;
 
 .PHONY: err ## Error function to catch error while running Makefile

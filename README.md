@@ -9,27 +9,31 @@ A sample of Spring boot WebFlux and Kotlin Coroutine with Handler and Router. In
 Please make sure Docker is up and running.
 
 ## Production
-`application.yml` will be referred for the configuration.
-
 ```bash
 $ make run
 ```
+`application.yml` will be referred for the configuration. This command does
+- Build Docker image with the implementation
+- Spin up MySQL and Springboot application (this application) by `docker-compose`
 
 ## Development
-`application-local.yml` will be referred for the configuration.
-
 ```bash
 $ make devDB
 $ make devBoot
 ```
+`application-local.yml` will be referred for the configuration.
+
+`make devDB` only spins up MySQL, and `make devBoot` run this application by development mode via `gradle`.
 
 ## Clean up environment
 ```bash
 $ make clean
 ```
 
+This command cleans up database.
+
 # OpenAPI
-## How to get OpenAPI yaml
+## How to access Swagger UI
 ```bash
 http://localhost:8080/webjars/swagger-ui/index.html
 ```
