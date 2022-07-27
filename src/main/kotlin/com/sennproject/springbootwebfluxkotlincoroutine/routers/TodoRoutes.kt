@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import org.springdoc.core.annotations.RouterOperation
@@ -48,9 +49,9 @@ class TodoRoutes {
                 summary = "Find all todos by status",
                 tags = ["Todos"],
                 parameters = [
-                    Parameter(`in` = ParameterIn.QUERY, name = "status", description = "status"),
-                    Parameter(`in` = ParameterIn.QUERY, name = "page", description = "page"),
-                    Parameter(`in` = ParameterIn.QUERY, name = "size", description = "size"),
+                    Parameter(`in` = ParameterIn.QUERY, name = "status", description = "status", example = "false"),
+                    Parameter(`in` = ParameterIn.QUERY, name = "page", description = "page", example = "0"),
+                    Parameter(`in` = ParameterIn.QUERY, name = "size", description = "size", example = "10"),
                 ]
             )
         ),
@@ -62,7 +63,18 @@ class TodoRoutes {
                 summary = "Add a todo",
                 tags = ["Todos"],
                 requestBody = RequestBody(
-                    content = [Content(schema = Schema(implementation = Todo::class))]
+                    content = [Content(
+                        schema = Schema(implementation = Todo::class),
+                        examples = [ExampleObject(
+                            "{\n" +
+                                    "  \"id\": null,\n" +
+                                    "  \"task\": \"Buy a milk\",\n" +
+                                    "  \"status\": false,\n" +
+                                    "  \"created_at\": \"2022-07-27T22:06:30.403Z\",\n" +
+                                    "  \"updated_at\": \"2022-07-27T22:06:30.403Z\"\n" +
+                                    "}"
+                        )]
+                    )]
                 )
             )
         ),
@@ -74,7 +86,18 @@ class TodoRoutes {
                 summary = "Edit a todo",
                 tags = ["Todos"],
                 requestBody = RequestBody(
-                    content = [Content(schema = Schema(implementation = Todo::class))]
+                    content = [Content(
+                        schema = Schema(implementation = Todo::class),
+                        examples = [ExampleObject(
+                            "{\n" +
+                                    "  \"id\": 1,\n" +
+                                    "  \"task\": \"One more a milk\",\n" +
+                                    "  \"status\": true,\n" +
+                                    "  \"created_at\": \"2022-07-27T22:06:30.403Z\",\n" +
+                                    "  \"updated_at\": \"2022-07-27T22:06:30.403Z\"\n" +
+                                    "}"
+                        )]
+                    )]
                 )
             )
         ),
