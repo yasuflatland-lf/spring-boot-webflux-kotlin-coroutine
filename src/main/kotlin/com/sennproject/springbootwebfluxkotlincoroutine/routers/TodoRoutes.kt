@@ -5,20 +5,16 @@ import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
-import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springdoc.core.annotations.RouterOperation
 import org.springdoc.core.annotations.RouterOperations
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.MediaType
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.reactive.function.server.coRouter
-
 
 /**
  * @author Yasuyuki Takeo
@@ -33,117 +29,64 @@ class TodoRoutes {
     @Bean
     @RouterOperations(
         RouterOperation(
-            path = "/todos",
+            path = "/todos/{id}",
             method = [RequestMethod.GET],
             operation = Operation(
                 operationId = "getTodoById",
-                summary = "Find a todos by id",
-                requestBody = RequestBody(
-                    content = [Content(schema = Schema(implementation = Todo::class))]
-                ),
-                responses = [
-                    ApiResponse(
-                        responseCode = "200",
-                        content = [Content(schema = Schema(implementation = Todo::class))]
-                    ),
-                    ApiResponse(
-                        responseCode = "404",
-                        description = "no Todo with such id found"
-                    )
+                summary = "Find a todo by id",
+                tags = ["Todos"],
+                parameters = [
+                    Parameter(`in` = ParameterIn.PATH, name = "id", description = "id"),
                 ]
             )
         ),
         RouterOperation(
-            path = "/todo",
+            path = "/todos",
             method = [RequestMethod.GET],
             operation = Operation(
                 operationId = "findAllByStatus",
                 summary = "Find all todos by status",
+                tags = ["Todos"],
                 parameters = [
-                    Parameter(`in` = ParameterIn.PATH, name = "status", description = "status"),
-                    Parameter(`in` = ParameterIn.PATH, name = "size", description = "size"),
-                    Parameter(`in` = ParameterIn.PATH, name = "size", description = "size"),
-                ],
-                responses = [
-                    ApiResponse(
-                        responseCode = "200",
-                        content = [Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = ArraySchema(
-                                schema = Schema(implementation = Todo::class)
-                            )
-                        )]
-                    ),
-                    ApiResponse(
-                        responseCode = "404",
-                        description = "no Todo with such id found"
-                    )
+                    Parameter(`in` = ParameterIn.QUERY, name = "status", description = "status"),
+                    Parameter(`in` = ParameterIn.QUERY, name = "page", description = "page"),
+                    Parameter(`in` = ParameterIn.QUERY, name = "size", description = "size"),
                 ]
             )
         ),
         RouterOperation(
-            path = "/todo",
+            path = "/todos",
             method = [RequestMethod.POST],
             operation = Operation(
                 operationId = "edit",
                 summary = "Add a todo",
+                tags = ["Todos"],
                 requestBody = RequestBody(
                     content = [Content(schema = Schema(implementation = Todo::class))]
-                ),
-                responses = [
-                    ApiResponse(
-                        responseCode = "200",
-                        description = "succeeded",
-                        content = [Content(schema = Schema(implementation = Todo::class))]
-                    ),
-                    ApiResponse(
-                        responseCode = "404",
-                        description = "Can not add Todo"
-                    )
-                ]
+                )
             )
         ),
         RouterOperation(
-            path = "/todo",
+            path = "/todos",
             method = [RequestMethod.PATCH],
             operation = Operation(
                 operationId = "edit",
                 summary = "Edit a todo",
+                tags = ["Todos"],
                 requestBody = RequestBody(
                     content = [Content(schema = Schema(implementation = Todo::class))]
-                ),
-                responses = [
-                    ApiResponse(
-                        responseCode = "200",
-                        description = "succeeded",
-                        content = [Content(schema = Schema(implementation = Todo::class))]
-                    ),
-                    ApiResponse(
-                        responseCode = "404",
-                        description = "Can not edit Todo with the id"
-                    )
-                ]
+                )
             )
         ),
         RouterOperation(
-            path = "/todo",
+            path = "/todos/{id}",
             method = [RequestMethod.DELETE],
             operation = Operation(
                 operationId = "delete",
                 summary = "Delete a todo by id",
+                tags = ["Todos"],
                 parameters = [
-                    Parameter(`in` = ParameterIn.PATH, name = "id", description = "Todo ID"),
-                ],
-                responses = [
-                    ApiResponse(
-                        responseCode = "200",
-                        description = "succeeded",
-                        content = [Content(schema = Schema(implementation = Todo::class))]
-                    ),
-                    ApiResponse(
-                        responseCode = "404",
-                        description = "Can not delete Todo with the id"
-                    )
+                    Parameter(`in` = ParameterIn.PATH, name = "id", description = "id"),
                 ]
             )
         ),
