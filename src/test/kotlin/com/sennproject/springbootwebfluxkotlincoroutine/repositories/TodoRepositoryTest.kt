@@ -2,6 +2,7 @@ package com.sennproject.springbootwebfluxkotlincoroutine.repositories
 
 import com.sennproject.springbootwebfluxkotlincoroutine.AbstractContainerBaseTest
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
+import io.kotest.core.annotation.DoNotParallelize
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.blocking.forAll
 import io.kotest.data.row
@@ -19,7 +20,10 @@ import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers
-@SpringBootTest
+@SpringBootTest(
+    properties = ["spring.main.web-application-type=reactive"],
+    args = ["-opt-in=kotlin.RequiresOptIn"])
+@DoNotParallelize
 @ActiveProfiles("test")
 @ContextConfiguration(initializers = [AbstractContainerBaseTest.Initializer::class])
 class TodoRepositoryTest : FunSpec() {

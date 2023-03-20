@@ -5,10 +5,10 @@ import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
 import com.sennproject.springbootwebfluxkotlincoroutine.utils.TodoTestUtils
 import io.kotest.core.annotation.AutoScan
+import io.kotest.core.annotation.DoNotParallelize
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.count
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -24,8 +24,12 @@ import reactor.core.publisher.Mono
 
 @AutoScan
 @Testcontainers
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalStdlibApi::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = ["spring.main.web-application-type=reactive"],
+    args = ["-opt-in=kotlin.RequiresOptIn"]
+)
+@DoNotParallelize
 @ActiveProfiles("test")
 @ContextConfiguration(initializers = [AbstractContainerBaseTest.Initializer::class])
 class TodoRoutesTest : FunSpec() {

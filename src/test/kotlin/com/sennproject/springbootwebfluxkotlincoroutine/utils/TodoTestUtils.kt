@@ -1,7 +1,7 @@
 package com.sennproject.springbootwebfluxkotlincoroutine.utils
 
-import com.github.javafaker.Faker
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
+import net.datafaker.Faker
 
 class TodoTestUtils {
     companion object {

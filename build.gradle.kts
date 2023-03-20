@@ -3,13 +3,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     jacoco
     id("io.freefair.lombok") version "6.5.0.3"
-    id("org.springframework.boot") version "2.6.9"
-    id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
-    id("io.spring.dependency-management") version "1.0.12.RELEASE"
-    id("org.openapi.generator") version "6.0.1"
+    id("org.springframework.boot") version "2.7.9"
+    id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
+    id("io.spring.dependency-management") version "1.1.0"
+    id("org.openapi.generator") version "6.4.0"
 
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
+    kotlin("jvm") version "1.7.22"
+    kotlin("plugin.spring") version "1.7.22"
 }
 
 group = "com.sennproject"
@@ -20,18 +20,16 @@ repositories {
     mavenCentral()
 }
 
-extra["kotestVersion"] = "5.1.0"
-extra["openAPIVersion"] = "1.6.9"
-extra["testcontainersVersion"] = "1.17.3"
-extra["coroutinesCoreVersion"] = "1.6.3"
+extra["kotestVersion"] = "5.5.5"
+extra["openAPIVersion"] = "1.6.15"
+extra["testcontainersVersion"] = "1.17.6"
+extra["coroutinesCoreVersion"] = "1.6.4"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-    implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
@@ -50,15 +48,15 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-webflux-ui:${property("openAPIVersion")}")
 
     // Database
-    runtimeOnly("dev.miku:r2dbc-mysql")
-    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
+    runtimeOnly("com.mysql:mysql-connector-j:8.0.+")
 
     // Test
     testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-assertions-core:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-property:${property("kotestVersion")}")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${property("coroutinesCoreVersion")}")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.1")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
@@ -68,7 +66,7 @@ dependencies {
     testImplementation("org.testcontainers:r2dbc")
 
     // Faker
-    implementation("com.github.javafaker:javafaker:1.0.2")
+    implementation("net.datafaker:datafaker:1.8.1")
 
 }
 

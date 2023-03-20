@@ -1,8 +1,13 @@
 package com.sennproject.springbootwebfluxkotlincoroutine
 
+import io.r2dbc.spi.ConnectionFactory
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Bean
+import org.springframework.core.io.ClassPathResource
+import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer
+import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator
 
 /**
  * @author Yasuyuki Takeo
@@ -15,7 +20,15 @@ import org.springframework.boot.runApplication
         description = "Springboot Webflux and Coroutine example implementations"
     )
 )
-class SpringBootWebfluxKotlinCoroutineApplication
+class SpringBootWebfluxKotlinCoroutineApplication {
+    @Bean
+    fun initializer(connectionFactory: ConnectionFactory): ConnectionFactoryInitializer? {
+        val initializer = ConnectionFactoryInitializer()
+        initializer.setConnectionFactory(connectionFactory)
+        initializer.setDatabasePopulator(ResourceDatabasePopulator(ClassPathResource("db/tables.sql")))
+        return initializer
+    }
+}
 
 fun main(args: Array<String>) {
     runApplication<SpringBootWebfluxKotlinCoroutineApplication>(*args)
