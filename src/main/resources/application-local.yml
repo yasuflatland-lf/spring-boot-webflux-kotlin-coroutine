@@ -2,14 +2,13 @@ server:
   port: 8080
 
 spring:
-  flyway:
-    url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
-    user: root
-    password: password
-    locations: classpath:db/migration
   r2dbc:
+    pool:
+      enabled: true
+      initial-size: 10
+      max-size: 50
     url: r2dbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
-    user: root
+    username: root
     password: password
 
   main:

@@ -32,12 +32,7 @@ abstract class AbstractContainerBaseTest {
                     )
                 }&characterEncoding=utf-8&useSSL=false&&sslMode=DISABLED",
                 "spring.r2dbc.username=${mysql.username}",
-                "spring.r2dbc.password=${mysql.password}",
-                // Due to flyway is not integrated with r2dbc.
-                "spring.flyway.url=${mysql.jdbcUrl}",
-                "spring.flyway.user=${mysql.username}",
-                "spring.flyway.password=${mysql.password}",
-                "spring.flyway.locations=classpath:db/migration",
+                "spring.r2dbc.password=${mysql.password}"
             ).applyTo(applicationContext.environment)
         }
     }
