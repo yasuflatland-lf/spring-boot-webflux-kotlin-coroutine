@@ -2,11 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     jacoco
-    id("io.freefair.lombok") version "6.5.0.3"
-    id("org.springframework.boot") version "2.7.9"
+    id("io.freefair.lombok") version "6.6.1"
+    id("org.springframework.boot") version "2.7.11"
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.openapi.generator") version "6.4.0"
+    id("org.openapi.generator") version "6.5.0"
 
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
@@ -22,7 +22,7 @@ repositories {
 
 extra["kotestVersion"] = "5.5.5"
 extra["openAPIVersion"] = "1.6.15"
-extra["testcontainersVersion"] = "1.17.6"
+extra["testcontainersVersion"] = "1.18.0"
 extra["coroutinesCoreVersion"] = "1.6.4"
 
 dependencies {
@@ -90,8 +90,8 @@ tasks.withType<Test> {
 
 tasks.jacocoTestReport {
     reports {
-        xml.isEnabled = true
-        html.isEnabled = true
+        xml.required.set(false)
+        csv.required.set(false)
     }
 }
 

@@ -2,6 +2,7 @@ package com.sennproject.springbootwebfluxkotlincoroutine.handlers
 
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.flowOf
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -23,8 +24,8 @@ class TodoHandler(val repository: TodoRepository) {
         val log: Logger = LoggerFactory.getLogger(TodoHandler::class.java)
     }
 
-    suspend fun findAllByStatus(request: ServerRequest): ServerResponse {
-        return runCatching {
+    suspend fun findAllByStatus(request: ServerRequest): ServerResponse = coroutineScope {
+        return@coroutineScope runCatching {
             var status = request.queryParam("status").map { it.toBoolean() }.orElse(false)
             val page = request.queryParam("page").map { it.toInt() }.orElse(0)
             val size = request.queryParam("size").map { it.toInt() }.orElse(10)
@@ -37,56 +38,56 @@ class TodoHandler(val repository: TodoRepository) {
             }
             repository.findAllByStatusEquals(status, paging)
         }.fold(
-            onSuccess = {
-                ok().contentType(APPLICATION_JSON).bodyAndAwait(it);
-            },
-            onFailure = {
-                log.error(it.message)
-                status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .contentType(APPLICATION_JSON)
-                    .bodyAndAwait(flowOf(listOf<Todo>()))
-            }
+                onSuccess = {
+                    ok().contentType(APPLICATION_JSON).bodyAndAwait(it);
+                },
+                onFailure = {
+                    log.error(it.message)
+                    status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .contentType(APPLICATION_JSON)
+                            .bodyAndAwait(flowOf(listOf<Todo>()))
+                }
         )
     }
 
-    suspend fun findById(request: ServerRequest): ServerResponse {
+    suspend fun findById(request: ServerRequest): ServerResponse = coroutineScope {
         val id = request.pathVariable("id").toLong()
         val todo = id.let { repository.findById(id) }
-        return todo?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
-            ?: ServerResponse.notFound().buildAndAwait()
+        return@coroutineScope todo?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
+                ?: ServerResponse.notFound().buildAndAwait()
     }
 
-    suspend fun edit(request: ServerRequest): ServerResponse {
-        return runCatching {
+    suspend fun edit(request: ServerRequest): ServerResponse = coroutineScope {
+        return@coroutineScope runCatching {
             val todo = request.awaitBody<Todo>()
             repository.save(todo)
         }.fold(
-            onSuccess = {
-                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
-            },
-            onFailure = {
-                log.error(it.message)
-                status(HttpStatus.NOT_FOUND)
-                    .contentType(APPLICATION_JSON)
-                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
-            }
+                onSuccess = {
+                    ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+                },
+                onFailure = {
+                    log.error(it.message)
+                    status(HttpStatus.NOT_FOUND)
+                            .contentType(APPLICATION_JSON)
+                            .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+                }
         )
     }
 
-    suspend fun delete(request: ServerRequest): ServerResponse {
-        return runCatching {
+    suspend fun delete(request: ServerRequest): ServerResponse = coroutineScope {
+        return@coroutineScope runCatching {
             val id = request.pathVariable("id").toLong()
             repository.deleteById(id)
         }.fold(
-            onSuccess = {
-                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
-            },
-            onFailure = {
-                log.error(it.message)
-                status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .contentType(APPLICATION_JSON)
-                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
-            }
+                onSuccess = {
+                    ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+                },
+                onFailure = {
+                    log.error(it.message)
+                    status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .contentType(APPLICATION_JSON)
+                            .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+                }
         )
     }
 
