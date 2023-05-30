@@ -1,4 +1,7 @@
 # spring-boot-webflux-kotlin-coroutine
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/yasuflatland-lf/spring-boot-webflux-kotlin-coroutine/spring-boot-webflux-kotlin-coroutine.yml?branch=develop)
+[![codecov](https://codecov.io/github/yasuflatland-lf/spring-boot-webflux-kotlin-coroutine/branch/develop/graph/badge.svg?token=Kj9b0BQZcV)](https://codecov.io/github/yasuflatland-lf/spring-boot-webflux-kotlin-coroutine)
+
 A sample of Spring boot WebFlux and Kotlin Coroutine with Handler and Router. In this sample, implementing Todo model, handler and router with database (MySQL) testing.
 
 # Reqirements

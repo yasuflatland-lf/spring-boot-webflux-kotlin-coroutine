@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    java
     jacoco
     id("io.freefair.lombok") version "6.6.1"
     id("org.springframework.boot") version "2.7.11"
@@ -90,7 +91,7 @@ tasks.withType<Test> {
 
 tasks.jacocoTestReport {
     reports {
-        xml.required.set(false)
+        xml.required.set(true)
         csv.required.set(false)
     }
 }

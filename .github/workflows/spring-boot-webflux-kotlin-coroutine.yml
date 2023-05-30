@@ -1,0 +1,30 @@
+name: spring-boot-webflux-kotlin-coroutine CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  test:
+    name: Run Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '11'
+
+      - name: Install dependencies, run tests, and collect coverage
+        run: gradle clean build
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
