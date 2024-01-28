@@ -16,7 +16,6 @@ abstract class AbstractContainerBaseTest {
                 withPassword("password")
                 withDatabaseName("test")
                 withConfigurationOverride("db/mysql_conf_override")
-//                withFileSystemBind("./build/log", "/var/log/mysql")
                 withUrlParam("useSsl", "false")
                 start()
             }
