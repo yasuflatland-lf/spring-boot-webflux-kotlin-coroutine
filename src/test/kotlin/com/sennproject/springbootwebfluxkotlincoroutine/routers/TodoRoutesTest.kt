@@ -12,7 +12,7 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.count
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -21,6 +21,7 @@ import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.web.reactive.function.BodyInserters
 import org.testcontainers.junit.jupiter.Testcontainers
 import reactor.core.publisher.Mono
+
 
 @AutoScan
 @Testcontainers
@@ -48,7 +49,7 @@ class TodoRoutesTest : FunSpec() {
         }
 
         test("Get all todos Smoke Test") {
-            var todo = arrayListOf<Todo>()
+            val todo = arrayListOf<Todo>()
 
             WebTestClient
                 .bindToServer()
@@ -72,7 +73,7 @@ class TodoRoutesTest : FunSpec() {
         }
 
         test("Get all todos no params Test") {
-            var todo = arrayListOf<Todo>()
+            val todo = arrayListOf<Todo>()
 
             WebTestClient
                 .bindToServer()
@@ -89,7 +90,7 @@ class TodoRoutesTest : FunSpec() {
         }
 
         test("Add Smoke test") {
-            var todo = Todo(null)
+            val todo = Todo(null)
 
             WebTestClient
                 .bindToServer()
@@ -106,8 +107,8 @@ class TodoRoutesTest : FunSpec() {
 
         test("Edit Smoke test") {
             // Create a todo
-            var todo = Todo(null)
-            var result = todoRepository.save(todo)
+            val todo = Todo(null)
+            val result = todoRepository.save(todo)
             val beforeAmount = todoRepository.count()
             beforeAmount shouldBe 1
 
@@ -126,7 +127,7 @@ class TodoRoutesTest : FunSpec() {
                 .expectStatus()
                 .is2xxSuccessful
 
-            var changedResult = result.id?.let { todoRepository.findById(it) }
+            val changedResult = result.id?.let { todoRepository.findById(it) }
 
             // Must be properly edited.
             if (changedResult != null) {

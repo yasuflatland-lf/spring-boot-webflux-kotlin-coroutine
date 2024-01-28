@@ -3,28 +3,27 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     jacoco
-    id("io.freefair.lombok") version "6.6.1"
-    id("org.springframework.boot") version "2.7.11"
-    id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
-    id("io.spring.dependency-management") version "1.1.0"
-    id("org.openapi.generator") version "6.5.0"
+	id("org.springframework.boot") version "3.2.2"
+	id("io.spring.dependency-management") version "1.1.4"
+    id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
+    id("org.openapi.generator") version "7.2.0"
 
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
+	kotlin("jvm") version "1.9.22"
+	kotlin("plugin.spring") version "1.9.22"
 }
 
 group = "com.sennproject"
 version = "1.0.0"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
 }
 
-extra["kotestVersion"] = "5.5.5"
-extra["openAPIVersion"] = "1.6.15"
-extra["testcontainersVersion"] = "1.18.0"
-extra["coroutinesCoreVersion"] = "1.6.4"
+extra["kotestVersion"] = "5.8.0"
+extra["openAPIVersion"] = "1.7.0"
+extra["testcontainersVersion"] = "1.19.4"
+extra["coroutinesCoreVersion"] = "1.8.0-RC2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
@@ -49,19 +48,21 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-webflux-ui:${property("openAPIVersion")}")
 
     // Database
-    runtimeOnly("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
+    implementation("io.asyncer:r2dbc-mysql:1.0.6")
     runtimeOnly("com.mysql:mysql-connector-j:8.0.+")
+    implementation("org.springframework.data:spring-data-commons")
+    implementation("org.springframework.data:spring-data-relational")
 
     // Test
     testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-assertions-core:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-property:${property("kotestVersion")}")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${property("coroutinesCoreVersion")}")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.testcontainers:elasticsearch")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:r2dbc")
@@ -81,7 +82,7 @@ dependencyManagement {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 

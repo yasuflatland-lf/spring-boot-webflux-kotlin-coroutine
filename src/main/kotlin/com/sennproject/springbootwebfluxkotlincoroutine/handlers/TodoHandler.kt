@@ -26,7 +26,7 @@ class TodoHandler(val repository: TodoRepository) {
 
     suspend fun findAllByStatus(request: ServerRequest): ServerResponse = coroutineScope {
         return@coroutineScope runCatching {
-            var status = request.queryParam("status").map { it.toBoolean() }.orElse(false)
+            val status = request.queryParam("status").map { it.toBoolean() }.orElse(false)
             val page = request.queryParam("page").map { it.toInt() }.orElse(0)
             val size = request.queryParam("size").map { it.toInt() }.orElse(10)
             val sort = Sort.by(listOf(Sort.Order.desc("id")))
@@ -38,15 +38,15 @@ class TodoHandler(val repository: TodoRepository) {
             }
             repository.findAllByStatusEquals(status, paging)
         }.fold(
-                onSuccess = {
-                    ok().contentType(APPLICATION_JSON).bodyAndAwait(it);
-                },
-                onFailure = {
-                    log.error(it.message)
-                    status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .contentType(APPLICATION_JSON)
-                            .bodyAndAwait(flowOf(listOf<Todo>()))
-                }
+            onSuccess = {
+                ok().contentType(APPLICATION_JSON).bodyAndAwait(it);
+            },
+            onFailure = {
+                log.error(it.message)
+                status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(APPLICATION_JSON)
+                    .bodyAndAwait(flowOf(listOf<Todo>()))
+            }
         )
     }
 
@@ -54,7 +54,7 @@ class TodoHandler(val repository: TodoRepository) {
         val id = request.pathVariable("id").toLong()
         val todo = id.let { repository.findById(id) }
         return@coroutineScope todo?.let { ok().contentType(APPLICATION_JSON).bodyValueAndAwait(it) }
-                ?: ServerResponse.notFound().buildAndAwait()
+            ?: ServerResponse.notFound().buildAndAwait()
     }
 
     suspend fun edit(request: ServerRequest): ServerResponse = coroutineScope {
@@ -62,15 +62,15 @@ class TodoHandler(val repository: TodoRepository) {
             val todo = request.awaitBody<Todo>()
             repository.save(todo)
         }.fold(
-                onSuccess = {
-                    ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
-                },
-                onFailure = {
-                    log.error(it.message)
-                    status(HttpStatus.NOT_FOUND)
-                            .contentType(APPLICATION_JSON)
-                            .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
-                }
+            onSuccess = {
+                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+            },
+            onFailure = {
+                log.error(it.message)
+                status(HttpStatus.NOT_FOUND)
+                    .contentType(APPLICATION_JSON)
+                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+            }
         )
     }
 
@@ -79,15 +79,15 @@ class TodoHandler(val repository: TodoRepository) {
             val id = request.pathVariable("id").toLong()
             repository.deleteById(id)
         }.fold(
-                onSuccess = {
-                    ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
-                },
-                onFailure = {
-                    log.error(it.message)
-                    status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .contentType(APPLICATION_JSON)
-                            .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
-                }
+            onSuccess = {
+                ok().contentType(APPLICATION_JSON).bodyAndAwait(flowOf(it));
+            },
+            onFailure = {
+                log.error(it.message)
+                status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(APPLICATION_JSON)
+                    .bodyAndAwait(flowOf(Todo(id = 0L, task = "", status = false)))
+            }
         )
     }
 

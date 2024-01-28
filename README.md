@@ -5,9 +5,9 @@
 A sample of Spring boot WebFlux and Kotlin Coroutine with Handler and Router. In this sample, implementing Todo model, handler and router with database (MySQL) testing.
 
 # Reqirements
-- Java 11
-- Docker 4.17.0 >=
-- gradle 7.4.1 >=
+- Java 17
+- Docker 4.26.1 >=
+- gradle 8.1.1 >=
 
 # Getting Started
 Please make sure Docker is up and running.
