@@ -21,7 +21,7 @@ repositories {
 }
 
 extra["kotestVersion"] = "5.9.1"
-extra["openAPIVersion"] = "1.8.0"
+extra["openAPIVersion"] = "2.8.4"
 extra["testcontainersVersion"] = "1.20.4"
 extra["coroutinesCoreVersion"] = "1.10.1"
 
@@ -44,15 +44,15 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     
     // OpenAPI
-    implementation("org.springdoc:springdoc-openapi-kotlin:${property("openAPIVersion")}")
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:${property("openAPIVersion")}")
+    implementation("org.springframework.cloud:spring-cloud-function-web:4.2.1")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:${property("openAPIVersion")}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     // Database
-    implementation("io.asyncer:r2dbc-mysql:1.3.1")
     implementation("io.r2dbc:r2dbc-pool:1.0.2.RELEASE")
-    runtimeOnly("com.mysql:mysql-connector-j:8.4.+")
     implementation("org.springframework.data:spring-data-commons")
     implementation("org.springframework.data:spring-data-relational")
+    implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
 
     // Test
     testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
@@ -64,9 +64,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.testcontainers:junit-jupiter:1.17.3")
-    testImplementation("org.testcontainers:mysql:1.17.3")
-    testImplementation("org.testcontainers:r2dbc")
+    testImplementation("org.testcontainers:junit-jupiter:${property("testcontainersVersion")}")
+    testImplementation("org.testcontainers:postgresql:${property("testcontainersVersion")}")
+    testImplementation("org.testcontainers:r2dbc:${property("testcontainersVersion")}")
 
     // Faker
     implementation("net.datafaker:datafaker:1.8.1")

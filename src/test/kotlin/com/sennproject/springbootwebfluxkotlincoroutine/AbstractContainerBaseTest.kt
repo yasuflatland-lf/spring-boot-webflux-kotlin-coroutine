@@ -3,20 +3,19 @@ package com.sennproject.springbootwebfluxkotlincoroutine
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
-import org.testcontainers.containers.MySQLContainer
+import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 
 @Testcontainers
 abstract class AbstractContainerBaseTest {
     companion object {
-        val mysql: MySQLContainer<*> = MySQLContainer<Nothing>(DockerImageName.parse("mysql:8.0"))
-            .apply {
-                withUsername("root")
+        val postgres: PostgreSQLContainer<*> =
+            PostgreSQLContainer<Nothing>(DockerImageName.parse("postgres:15")).apply {
+                withUsername("test")
                 withPassword("password")
                 withDatabaseName("test")
-                withConfigurationOverride("db/mysql_conf_override")
-                withUrlParam("useSsl", "false")
+                withExposedPorts(5432)
                 start()
             }
     }
@@ -24,17 +23,10 @@ abstract class AbstractContainerBaseTest {
     class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
         override fun initialize(applicationContext: ConfigurableApplicationContext) {
             TestPropertyValues.of(
-                "spring.r2dbc.url=${
-                    mysql.jdbcUrl.replace(
-                        "jdbc",
-                        "r2dbc"
-                    )
-                }&characterEncoding=utf-8&useSSL=false&&sslMode=DISABLED",
-                "spring.r2dbc.username=${mysql.username}",
-                "spring.r2dbc.password=${mysql.password}"
+                "spring.r2dbc.url=${postgres.jdbcUrl.replace("jdbc", "r2dbc")}",
+                "spring.r2dbc.username=${postgres.username}",
+                "spring.r2dbc.password=${postgres.password}"
             ).applyTo(applicationContext.environment)
         }
     }
-
-
 }

@@ -215,6 +215,19 @@ class TodoRoutesTest : FunSpec() {
                 .returnResult()
 
         }
+
+        test("Access OpenAPI UI") {
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .get()
+                .uri("/swagger-ui/index.html")
+                .accept(MediaType.TEXT_HTML)
+                .exchange()
+                .expectStatus()
+                .isOk
+        }
     }
 
 }

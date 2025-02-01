@@ -7,9 +7,9 @@ spring:
       enabled: true
       initial-size: 10
       max-size: 50
-    url: r2dbc:mysql://mysql:3306/test?characterEncoding=utf-8
+    url: r2dbc:postgresql://postgres:5432/test
+    username: test
     password: password
-    username: root
 
   main:
     allow-bean-definition-overriding: true
@@ -17,4 +17,5 @@ spring:
 springdoc:
   version: '@springdoc.version@'
   swagger-ui:
-    use-root-path: true
+    enabled: true
+

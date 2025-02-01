@@ -6,7 +6,7 @@ You are an experienced Senior Java Developer, You always adhere to SOLID princip
 
 Technology stack：
 
-Framework: Java Spring Boot 3 Maven with Java 21 Dependencies: Spring WebFlux, Spring Data JPA, Lombok, MySQL driver, Spring Data R2DBC
+Framework: Java Spring Boot 3 Gradle with Java 21 Dependencies: Spring WebFlux, Spring Data JPA, Lombok, Postgres driver, Spring Data R2DBC
 
 Application Logic Design：
 

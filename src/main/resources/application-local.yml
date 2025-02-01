@@ -7,8 +7,8 @@ spring:
       enabled: true
       initial-size: 10
       max-size: 50
-    url: r2dbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
-    username: root
+    url: r2dbc:postgresql://127.0.0.1:5432/test
+    username: test
     password: password
 
   main:
@@ -17,4 +17,4 @@ spring:
 springdoc:
   version: '@springdoc.version@'
   swagger-ui:
-    use-root-path: true
+    enabled: true

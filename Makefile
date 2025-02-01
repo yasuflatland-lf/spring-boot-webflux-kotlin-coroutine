@@ -13,10 +13,6 @@ MAKEFILE_DIR:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: clean
-clean: ## Cleanup database environment
-	rm -fR ./db/mysql_data
-
 .PHONY: down
 down: ## Docker compose down
 	docker-compose down;
@@ -31,6 +27,10 @@ devBoot: ## Run development environment
 
 .PHONY: run
 run: ## Run production environment
+	docker-compose up;
+
+.PHONY: run_init
+run_init: ## Run production environment with initialization
 	docker-compose up --build;
 
 .PHONY: genapi

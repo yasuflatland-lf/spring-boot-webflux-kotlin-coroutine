@@ -34,6 +34,6 @@ out/
 
 ### VS Code ###
 .vscode/
-db/mysql_data
 spring-boot-logger.log
 logs
+db/postgres_data/

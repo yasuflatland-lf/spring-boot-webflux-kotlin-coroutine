@@ -1,24 +1,20 @@
 services:
-  mysql:
-    image: mysql:8.0
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    healthcheck:
-      test: "exit 0"
-
-    ports:
-      - "3306:3306"
-      - "33060:33060"
-    volumes:
-      # Data initialize script trigger directory. place initialize file under the mysql_init directory.
-      - ./db/mysql_init:/docker-entrypoint-initdb.d
-      # persistent data directory
-      - ./db/mysql_data:/var/lib/mysql
-      # configuration file
-      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+  postgres:
+    image: postgres:15
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: test
-      MYSQL_PASSWORD: password
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/postgres_data:/var/lib/postgresql/data
+      - ./db/postgres_init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   app:
     build:
@@ -28,5 +24,5 @@ services:
       - "8080:8080"
       - "9090:9090"
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy

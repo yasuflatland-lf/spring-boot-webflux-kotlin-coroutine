@@ -6,7 +6,7 @@ A sample of Spring boot WebFlux and Kotlin Coroutine with Handler and Router. In
 
 # Reqirements
 - Java 21
-- Docker 4.37.1 >=
+- Docker 4.37.2 >=
 - gradle 8.12 >=
 
 # Getting Started
@@ -18,7 +18,7 @@ $ make run
 ```
 `application.yml` will be referred for the configuration. This command does
 - Build Docker image with the implementation
-- Spin up MySQL and Springboot application (this application) by `docker-compose`
+- Spin up Database and Springboot application (this application) by `docker-compose`
 
 ## Development
 ```bash
@@ -27,7 +27,7 @@ $ make devBoot
 ```
 `application-local.yml` will be referred for the configuration.
 
-`make devDB` only spins up MySQL, and `make devBoot` run this application by development mode via `gradle`.
+`make devDB` only spins up Database, and `make devBoot` run this application by development mode via `gradle`.
 
 ### How to run test
 ```bash
