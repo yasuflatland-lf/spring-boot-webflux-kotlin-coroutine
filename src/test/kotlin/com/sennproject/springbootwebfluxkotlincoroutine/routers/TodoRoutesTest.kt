@@ -4,8 +4,8 @@ import com.sennproject.springbootwebfluxkotlincoroutine.AbstractContainerBaseTes
 import com.sennproject.springbootwebfluxkotlincoroutine.models.Todo
 import com.sennproject.springbootwebfluxkotlincoroutine.repositories.TodoRepository
 import com.sennproject.springbootwebfluxkotlincoroutine.utils.TodoTestUtils
-import io.kotest.core.annotation.AutoScan
-import io.kotest.core.annotation.DoNotParallelize
+import io.kotest.core.annotation.Isolate
+import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
@@ -23,18 +23,17 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import reactor.core.publisher.Mono
 
 
-@AutoScan
+@ApplyExtension(SpringExtension::class)
 @Testcontainers
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = ["spring.main.web-application-type=reactive"],
     args = ["-opt-in=kotlin.RequiresOptIn"]
 )
-@DoNotParallelize
+@Isolate
 @ActiveProfiles("test")
 @ContextConfiguration(initializers = [AbstractContainerBaseTest.Initializer::class])
 class TodoRoutesTest : FunSpec() {
-    override fun extensions() = listOf(SpringExtension)
 
     @Autowired
     private lateinit var todoRepository: TodoRepository

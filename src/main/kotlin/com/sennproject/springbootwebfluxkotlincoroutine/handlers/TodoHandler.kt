@@ -60,6 +60,12 @@ class TodoHandler(val repository: TodoRepository) {
     suspend fun edit(request: ServerRequest): ServerResponse = coroutineScope {
         return@coroutineScope runCatching {
             val todo = request.awaitBody<Todo>()
+            // Spring Data R2DBC 4 silently no-ops an update that matches no row, so an
+            // unknown id has to be rejected explicitly to keep returning 404.
+            val id = todo.id
+            if (id != null && !repository.existsById(id)) {
+                throw NoSuchElementException("Todo id $id does not exist")
+            }
             repository.save(todo)
         }.fold(
             onSuccess = {

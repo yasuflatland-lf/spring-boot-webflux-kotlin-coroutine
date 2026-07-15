@@ -3,15 +3,15 @@ package com.sennproject.springbootwebfluxkotlincoroutine
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
-import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 
 @Testcontainers
 abstract class AbstractContainerBaseTest {
     companion object {
-        val postgres: PostgreSQLContainer<*> =
-            PostgreSQLContainer<Nothing>(DockerImageName.parse("postgres:15")).apply {
+        val postgres: PostgreSQLContainer =
+            PostgreSQLContainer(DockerImageName.parse("postgres:15")).apply {
                 withUsername("test")
                 withPassword("password")
                 withDatabaseName("test")
