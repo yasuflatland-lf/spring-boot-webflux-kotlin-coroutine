@@ -59,7 +59,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-property:${property("kotestVersion")}")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${property("coroutinesCoreVersion")}")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
