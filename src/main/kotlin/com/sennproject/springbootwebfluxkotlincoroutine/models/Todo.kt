@@ -1,7 +1,6 @@
 package com.sennproject.springbootwebfluxkotlincoroutine.models
 
 import io.swagger.v3.oas.annotations.media.Schema
-import lombok.NoArgsConstructor
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -9,7 +8,6 @@ import java.time.LocalDateTime
 /**
  * @author Yasuyuki Takeo
  */
-@NoArgsConstructor
 @Table("todos")
 data class Todo(
     @Id

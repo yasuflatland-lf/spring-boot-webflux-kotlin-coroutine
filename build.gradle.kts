@@ -1,94 +1,84 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     java
     jacoco
-	id("org.springframework.boot") version "3.4.2"
+	id("org.springframework.boot") version "4.1.0"
 	id("io.spring.dependency-management") version "1.1.7"
     id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
-    id("org.openapi.generator") version "7.10.0"
 
-    kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
+    kotlin("jvm") version "2.3.21"
+	kotlin("plugin.spring") version "2.3.21"
 }
 
 group = "com.sennproject"
 version = "1.0.0"
-java.sourceCompatibility = JavaVersion.VERSION_21
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
-extra["kotestVersion"] = "5.9.1"
-extra["openAPIVersion"] = "2.8.4"
-extra["testcontainersVersion"] = "1.20.4"
-extra["coroutinesCoreVersion"] = "1.10.1"
+extra["kotestVersion"] = "6.2.2"
+extra["openAPIVersion"] = "3.0.3"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${property("coroutinesCoreVersion")}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.springframework:spring-jdbc")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
 
-    // Lombok
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    
     // OpenAPI
-    implementation("org.springframework.cloud:spring-cloud-function-web:4.2.1")
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:${property("openAPIVersion")}")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     // Database
-    implementation("io.r2dbc:r2dbc-pool:1.0.2.RELEASE")
+    implementation("io.r2dbc:r2dbc-pool")
     implementation("org.springframework.data:spring-data-commons")
     implementation("org.springframework.data:spring-data-relational")
-    implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
+    implementation("org.postgresql:r2dbc-postgresql")
 
     // Test
     testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-assertions-core:${property("kotestVersion")}")
+    testImplementation("io.kotest:kotest-assertions-table:${property("kotestVersion")}")
     testImplementation("io.kotest:kotest-property:${property("kotestVersion")}")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${property("coroutinesCoreVersion")}")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+    testImplementation("io.kotest:kotest-extensions-spring:${property("kotestVersion")}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-r2dbc-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.testcontainers:junit-jupiter:${property("testcontainersVersion")}")
-    testImplementation("org.testcontainers:postgresql:${property("testcontainersVersion")}")
-    testImplementation("org.testcontainers:r2dbc:${property("testcontainersVersion")}")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-postgresql")
+    testImplementation("org.testcontainers:testcontainers-r2dbc")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Faker
-    implementation("net.datafaker:datafaker:1.8.1")
+    implementation("net.datafaker:datafaker:2.7.0")
 
     // Netty native libraries for MacOS
     if (System.getProperty("os.name").lowercase().contains("mac")) {
-        implementation("io.netty:netty-resolver-dns-native-macos:4.2.16.Final:osx-aarch_64")
-        implementation("io.netty:netty-resolver-dns-native-macos:4.2.16.Final:osx-x86_64")
+        // Version comes from the Spring Boot BOM so the natives stay in lockstep
+        // with the rest of Netty; they are one artifact set and must not diverge.
+        implementation("io.netty:netty-resolver-dns-native-macos::osx-aarch_64")
+        implementation("io.netty:netty-resolver-dns-native-macos::osx-x86_64")
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
-    }
-}
-
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "21"
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
 }
 

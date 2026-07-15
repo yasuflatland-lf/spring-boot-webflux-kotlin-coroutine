@@ -5,12 +5,22 @@
 A sample of Spring boot WebFlux and Kotlin Coroutine with Handler and Router. In this sample, implementing Todo model, handler and router with database (MySQL) testing.
 
 # Reqirements
-- Java 21
+- Java 25 (managed by [mise](https://mise.jdx.dev/))
 - Docker 4.37.2 >=
-- gradle 8.12 >=
+- gradle 9.5.1 (provided by the Gradle wrapper)
+
+Spring Boot 4.1 / Kotlin 2.3 / Spring Framework 7.
 
 # Getting Started
 Please make sure Docker is up and running.
+
+## Toolchain setup
+The JDK is pinned in `mise.toml`. Install it with:
+```bash
+$ mise trust
+$ mise install
+```
+`mise` then puts Java 25 on the `PATH` and sets `JAVA_HOME` for this directory.
 
 ## Production
 ```bash

@@ -1,5 +1,5 @@
 # Container in which to build the application
-FROM gradle:8.12-jdk21-alpine as builder
+FROM gradle:9.5.1-jdk25 AS builder
 
 # Copy the source code into the builder container
 WORKDIR /app
@@ -9,7 +9,7 @@ COPY . .
 RUN gradle assemble
 
 # Container in which to run the application
-FROM eclipse-temurin:21.0.11_10-jdk-ubi9-minimal
+FROM eclipse-temurin:25.0.3_9-jdk-ubi10-minimal
 
 # Copy the jar from the builder container into the run container
 COPY --from=builder /app/build/libs/spring-boot-webflux-kotlin-coroutine-*.jar spring-boot-webflux-kotlin-coroutine.jar

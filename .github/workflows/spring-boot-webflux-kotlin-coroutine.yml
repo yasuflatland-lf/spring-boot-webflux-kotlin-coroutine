@@ -19,11 +19,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '21'
+      - name: Set up toolchain
+        uses: jdx/mise-action@v4 # Installs the Java version pinned in mise.toml
 
       - name: Install dependencies, run tests, and collect coverage
         run: ./gradlew clean build
