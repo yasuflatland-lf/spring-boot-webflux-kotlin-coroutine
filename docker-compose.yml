@@ -8,8 +8,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      # POSTGRES_DB above already creates the `test` database on first start.
       - ./db/postgres_data:/var/lib/postgresql/data
-      - ./db/postgres_init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U test"]
       interval: 30s
