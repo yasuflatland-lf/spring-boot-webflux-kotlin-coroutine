@@ -73,8 +73,8 @@ dependencies {
 
     // Netty native libraries for MacOS
     if (System.getProperty("os.name").lowercase().contains("mac")) {
-        implementation("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
-        implementation("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-x86_64")
+        implementation("io.netty:netty-resolver-dns-native-macos:4.2.16.Final:osx-aarch_64")
+        implementation("io.netty:netty-resolver-dns-native-macos:4.2.16.Final:osx-x86_64")
     }
 }
 
