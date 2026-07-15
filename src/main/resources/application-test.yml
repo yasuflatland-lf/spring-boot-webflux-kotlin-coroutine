@@ -1,10 +1,9 @@
 server:
   port: 8080
 
-  r2dbc:
-    url: ""
-    username: "root"
-    password: "password"
+spring:
+  # spring.r2dbc.* is deliberately absent: AbstractContainerBaseTest.Initializer injects it
+  # from the Testcontainers instance, whose port is only known at runtime.
   main:
     allow-bean-definition-overriding: true
 
