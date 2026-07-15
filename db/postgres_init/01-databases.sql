@@ -1,3 +1,0 @@
--- データベースを作成
-CREATE DATABASE test
-WITH ENCODING 'UTF8';
