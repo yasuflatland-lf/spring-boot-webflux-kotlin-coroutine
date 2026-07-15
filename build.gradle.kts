@@ -21,7 +21,7 @@ repositories {
 }
 
 extra["kotestVersion"] = "5.9.1"
-extra["openAPIVersion"] = "2.8.4"
+extra["openAPIVersion"] = "2.8.17"
 extra["testcontainersVersion"] = "1.20.4"
 extra["coroutinesCoreVersion"] = "1.10.1"
 
