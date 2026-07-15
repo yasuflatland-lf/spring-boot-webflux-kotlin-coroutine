@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.time.LocalDateTime
 
 @ApplyExtension(SpringExtension::class)
 @Testcontainers
@@ -79,6 +80,31 @@ class TodoRepositoryTest : FunSpec() {
                     result.count() shouldBe amount
                 }
             }
+        }
+
+        test("findById") {
+            var todo = Todo(null)
+            todo.task = "test"
+            val saved = todoRepository.save(todo)
+
+            val result = todoRepository.findById(saved.id!!)
+            result shouldNotBe null
+            result?.id shouldBe saved.id
+            result?.task shouldBe "test"
+        }
+
+        // todos.created_at / updated_at are TIMESTAMPTZ while Todo maps them to LocalDateTime,
+        // so the driver has to apply and strip an offset. A fixed timestamp keeps this from
+        // passing on precision alone.
+        test("Timestamps survive a TIMESTAMPTZ round trip") {
+            val fixed = LocalDateTime.of(2026, 1, 2, 3, 4, 5)
+            var todo = Todo(null, created_at = fixed, updated_at = fixed)
+            todo.task = "test"
+            val saved = todoRepository.save(todo)
+
+            val result = todoRepository.findById(saved.id!!)
+            result?.created_at shouldBe fixed
+            result?.updated_at shouldBe fixed
         }
 
         test("findAllByStatusEquals failure pattern") {

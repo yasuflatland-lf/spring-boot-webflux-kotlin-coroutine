@@ -215,6 +215,51 @@ class TodoRoutesTest : FunSpec() {
 
         }
 
+        test("Get a todo by id Smoke test") {
+            var todo = Todo(null)
+            todo.task = "find me"
+            todo.status = true
+            val result = todoRepository.save(todo)
+
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .get()
+                .uri { uriBuilder ->
+                    uriBuilder
+                        .pathSegment("todos", result.id.toString())
+                        .build()
+                }
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk
+                .expectBody<Todo>()
+                .consumeWith { response ->
+                    response.responseBody?.id shouldBe result.id
+                    response.responseBody?.task shouldBe "find me"
+                    response.responseBody?.status shouldBe true
+                }
+        }
+
+        test("Get a todo by unknown id Error test") {
+            WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:$port")
+                .build()
+                .get()
+                .uri { uriBuilder ->
+                    uriBuilder
+                        .pathSegment("todos", "999999")
+                        .build()
+                }
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isNotFound
+        }
+
         test("Access OpenAPI UI") {
             WebTestClient
                 .bindToServer()
