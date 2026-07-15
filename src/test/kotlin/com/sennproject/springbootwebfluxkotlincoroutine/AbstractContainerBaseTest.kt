@@ -11,7 +11,7 @@ import org.testcontainers.utility.DockerImageName
 abstract class AbstractContainerBaseTest {
     companion object {
         val postgres: PostgreSQLContainer =
-            PostgreSQLContainer(DockerImageName.parse("postgres:15")).apply {
+            PostgreSQLContainer(DockerImageName.parse("postgres:18")).apply {
                 withUsername("test")
                 withPassword("password")
                 withDatabaseName("test")
