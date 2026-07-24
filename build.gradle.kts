@@ -22,7 +22,7 @@ repositories {
     mavenCentral()
 }
 
-extra["kotestVersion"] = "6.2.2"
+extra["kotestVersion"] = "6.2.3"
 extra["openAPIVersion"] = "3.0.3"
 
 dependencies {
