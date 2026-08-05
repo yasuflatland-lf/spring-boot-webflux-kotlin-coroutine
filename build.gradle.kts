@@ -23,7 +23,7 @@ repositories {
 }
 
 extra["kotestVersion"] = "6.2.3"
-extra["openAPIVersion"] = "3.0.3"
+extra["openAPIVersion"] = "3.1.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
