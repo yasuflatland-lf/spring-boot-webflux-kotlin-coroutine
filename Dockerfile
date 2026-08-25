@@ -1,5 +1,5 @@
 # Container in which to build the application
-FROM gradle:9.7.0-jdk25 AS builder
+FROM gradle:9.7.1-jdk25 AS builder
 
 # Copy the source code into the builder container
 WORKDIR /app
