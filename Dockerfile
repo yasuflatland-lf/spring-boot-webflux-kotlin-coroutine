@@ -9,7 +9,7 @@ COPY . .
 RUN gradle assemble
 
 # Container in which to run the application
-FROM eclipse-temurin:25.0.3_9-jdk-ubi10-minimal
+FROM eclipse-temurin:25.0.4_7-jdk-ubi10-minimal
 
 # Copy the jar from the builder container into the run container
 COPY --from=builder /app/build/libs/spring-boot-webflux-kotlin-coroutine-*.jar spring-boot-webflux-kotlin-coroutine.jar
