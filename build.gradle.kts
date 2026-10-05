@@ -25,6 +25,10 @@ repositories {
 extra["kotestVersion"] = "6.2.5"
 extra["openAPIVersion"] = "3.1.1"
 
+// Override Spring Boot BOM-managed versions with newer releases
+extra["kotlin-coroutines.version"] = "1.11.0"
+extra["r2dbc-postgresql.version"] = "1.1.3.RELEASE"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -78,7 +82,7 @@ dependencies {
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+        freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
 
