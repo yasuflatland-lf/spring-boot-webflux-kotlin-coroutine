@@ -22,7 +22,7 @@ repositories {
     mavenCentral()
 }
 
-extra["kotestVersion"] = "6.2.6"
+extra["kotestVersion"] = "6.2.7"
 extra["openAPIVersion"] = "3.2.0"
 
 // Override Spring Boot BOM-managed versions with newer releases
