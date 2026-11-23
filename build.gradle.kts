@@ -23,7 +23,7 @@ repositories {
 }
 
 extra["kotestVersion"] = "6.2.7"
-extra["openAPIVersion"] = "3.2.0"
+extra["openAPIVersion"] = "3.2.1"
 
 // Override Spring Boot BOM-managed versions with newer releases
 extra["kotlin-coroutines.version"] = "1.11.0"
